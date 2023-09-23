@@ -1,63 +1,51 @@
 import java.sql.*;
 
-public class UPDATETABLE{
-    private final String url ="jdbc:mysql://localhost:3306/mydb";
-    private final String username = "root";
-    private final String password = "199500";
+public class UPDATETABLE {
+    // Database connection parameters
+    private final String url = "jdbc:mysql://localhost:3306/mydb"; // JDBC URL for the database
+    private final String username = "root"; // Database username
+    private final String password = "199500"; // Database password
 
-    //getUrl
-    public String getUrl(){
+    // Getter method for the URL
+    public String getUrl() {
         return url;
     }
 
-    //getUsername
-    public String getUsername(){
+    // Getter method for the username
+    public String getUsername() {
         return username;
     }
 
-    //getPassword
-    public String getPassword(){
+    // Getter method for the password
+    public String getPassword() {
         return password;
     }
 
     public static void main(String[] args) {
-        UPDATETABLE updatetable = new UPDATETABLE();
+        UPDATETABLE updatetable = new UPDATETABLE(); // Create an instance of the UPDATETABLE class
 
-        Connection connection = null;
-        Statement statement = null;
+        Connection connection = null; // Initialize a database connection object
+        Statement statement = null; // Initialize a statement object for executing SQL queries
 
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Load the MySQL JDBC driver class
 
             connection = DriverManager.getConnection(updatetable.getUrl(), updatetable.getUsername(), updatetable.getPassword());
+            // Establish a database connection using the URL, username, and password
 
-            System.out.println("Connected");
+            System.out.println("Connected"); // Print a message to indicate a successful connection
 
-            statement = connection.createStatement();
+            statement = connection.createStatement(); // Create a statement object
 
             String sqlQuery = "UPDATE mydb.employees SET department_Id = 2 WHERE Id = 102;";
+            // SQL query to update the "employees" table, setting department_Id to 2 for the row with Id 102
 
             int rowAffected = statement.executeUpdate(sqlQuery);
-            
-            System.out.println(rowAffected);
+            // Execute the SQL update query and get the number of rows affected
 
-            String sqlQuery2 = "SELECT  employees.Id, employees.FirstName, employees.LastName, employees.department_Id, department.department_name FROM mydb.employees JOIN mydb.department ON employees.department_Id = department.department_Id;";
- 
-            ResultSet resultSet = statement.executeQuery(sqlQuery2);
-
-            while(resultSet.next()){
-                String colum1Id = resultSet.getString("Id");
-                String colum2FirstName = resultSet.getString("FirstName");
-                String colum3LastName = resultSet.getString("LastName");
-                String colum4Department_Id = resultSet.getString("department_Id");
-                String colum5Department_name = resultSet.getString("department_name");
-                
-                System.out.format("|%s |%s |%s |%s |%s | %n", colum1Id, colum2FirstName, colum3LastName, colum4Department_Id, colum5Department_name );
-            }
-
-
-        }catch(Exception e){
-            System.out.println(e);
+            System.out.println(rowAffected); // Print the number of rows affected by the update
+        } catch (Exception e) {
+            System.out.println(e); // Print any exceptions that occur during execution
         }
     }
 }
